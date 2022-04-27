@@ -1,5 +1,7 @@
 FROM centos:7
 
+USER root
+
 MAINTAINER The CentOS Project <cloud-ops@centos.org>
 
 LABEL Vendor="CentOS" \
