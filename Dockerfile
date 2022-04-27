@@ -17,4 +17,4 @@ RUN echo "Hello from Dockerfile" > /usr/share/httpd/noindex/index.html
 
 EXPOSE 80
 
-ENTRYPOINT ["httpd", "-D", "FOREGROUND"]
+ENTRYPOINT ["/usr/sbin/httpd", "-D", "FOREGROUND"]
