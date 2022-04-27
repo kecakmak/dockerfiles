@@ -15,8 +15,17 @@ RUN yum -y --setopt=tsflags=nodocs update && \
     yum -y --setopt=tsflags=nodocs install httpd && \
     yum clean all
 
-RUN echo "Hello from Dockerfile" > /usr/share/httpd/noindex/index.html
+RUN sed -i "s/Listen 80/Listen 8080/" /etc/httpd/conf/httpd.conf && \
+  chown apache:0 /etc/httpd/conf/httpd.conf && \
+  chmod g+r /etc/httpd/conf/httpd.conf && \
+  chown apache:0 /var/log/httpd && \
+  chmod g+rwX /var/log/httpd && \
+  chown apache:0 /var/run/httpd && \
+  chmod g+rwX /var/run/httpd
+RUN mkdir -p /var/www/html && echo "hello world!" >> /var/www/html/index.html && \
+  chown -R apache:0 /var/www/html && \
+  chmod -R g+rwX /var/www/html
+EXPOSE 8080
+USER apache
 
-EXPOSE 80
-
-ENTRYPOINT ["sudo", "/usr/sbin/httpd", "-D", "FOREGROUND"]
+ENTRYPOINT ["/usr/sbin/httpd", "-D", "FOREGROUND"]
